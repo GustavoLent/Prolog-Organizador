@@ -1,2 +1,5 @@
-consult('calendary.pl').
-consult('list.pl').
+init():-
+    consult('calendary.pl'),
+    consult('events_database.pl'),
+    consult('events_manipulator.pl'),
+    consult('list.pl').
