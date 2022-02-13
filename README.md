@@ -5,6 +5,7 @@ Neste projeto de trabalho, tem como função atuar como um pequeno sistema capaz
 
 ## Alunos ##
 * [Bruna Felix](https://github.com/BrunaFelix)
+* [Caio Borghi](https://github.com/CB0rghi)
 * [Guilherme Henrique Jardim](https://github.com/ghjardim)
 * [Gustavo Lima Lent](https://github.com/GustavoLent)
 * [José Fernandes Russino](https://github.com/z3fernandes)
