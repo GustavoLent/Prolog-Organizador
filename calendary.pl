@@ -21,7 +21,7 @@ imprimeDia(N,Max) :-
     ); 
     true.
 
-calendario() :-
+calendario :-
     write("Fevereiro de 2022"), 
     nl,
     imprimeDia(1,28).
