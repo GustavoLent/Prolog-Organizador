@@ -1,57 +1,41 @@
+printa_eventos([]).
+printa_eventos([A | B]) :-
+  format('Evento: ~w\t~n', A),
+  printa_eventos(B).
 
-%organiza(Evento, Roteiro, PrimeiroDia, ÚltimoDia, PrimeiraHora, ÚltimaHora).
-%rotina(Evenetos, Roteiro, 9)
-% rotina([], Roteiro, MaxDuracao, Sum)
+rotina(ListaEventos, I, Roteiro, MaxDuracao, Sum) :-
+  length(ListaEventos, Length),
+  I == Length ; Sum >= MaxDuracao,!,
+  printa_eventos(Roteiro).
 
-%rotina(findEventos(9, L), Roteiro, 9, 0, 0)
-
-% findEventos(Lista, Filtro(MaxDur), L)
-% 
-rotina([], Roteiro, MaxDuracao, Sum).
-
-rotina(ListaEventos, Roteiro, MaxDuracao, Sum, Resultado) :- 
-    format('Sum: ~a; MaxDuracao: ~a ~n', [Sum, MaxDuracao]),
-    Sum < MaxDuracao,
-    format('Passou! Sum: ~a, MaxDuracao ~a ~n', [Sum, MaxDuracao]),
+% Nome = N
+% Duracao = D
+% Roteiro = R
+% NewRoteiro = Q
+% TempList = T
+% Resto = Z
+% NewSum = Y
+rotina(ListaEventos, I, Roteiro, MaxDuracao, Sum) :- 
+    Sum < MaxDuracao, % Se soma < max duracao, vai adicionar eventos em Roteiro
     (
-        nth1(1, ListaEventos, evento(Name, Duracao)),       %aqui a gente tem o Duration // eventos[0] = Duracao 4,
-        format('Duracao, ~a ~n', Duracao),
-
-        
-
-        append(Roteiro, [Name, Duracao], NewRoteiro),
-        format('depois de append ~n'),
-
-        rest(ListaEventos, 2, Resto),
-        format('depois de rest ~n'),
-
-        NewSum is (Sum + Duracao),
-        format('depois de NewSum ~n'),
-
-        % format('NewSum, ~a', NewSum),
-        % nl,
-        format('vai chamar rotina ~n'),
-        rotina(Resto, NewRoteiro, MaxDuracao, NewSum)
+        nth1(I, ListaEventos, evento(Name, Duracao)), % pega primeiro item da ListaEventos       
+        E = evento(Name, Duracao),
+        Y is (Sum + Duracao), % 4 3
+        Y =< MaxDuracao ->
+        (
+          % Add event to Roteiro
+          findall(evento(Name, Duracao), evento(Name, Duracao), T),
+          append(Roteiro, T, Q), % Adiciona em NewRoteiro
+          rest(ListaEventos, 2, Z),
+          rotina(Z, I, Q, MaxDuracao, Y)
+        );
+        % Call function to next event in position
+        Next is (I + 1),
+        rotina(ListaEventos, Next, Roteiro, MaxDuracao, Sum)
     ). 
 
-fun(Num) :- 
-    Num < 5,
-    (
-        format('Num, ~a ~n', Num),
 
-        nth1(1, ListaEventos, evento(Name, Duracao)),       %aqui a gente tem o Duration // eventos[0] = Duracao 4,
-        format('Duracao, ~a ~n', Duracao),
-
-        Next is Num + 1,
-        format('Next, ~a', Next),
-        nl,
-        fun(Next)
-    ).
-    %eventos[0](Nome, Duracao)
-    %rotina(Eventos[I+1, N], Roteiro, MaxDuracao, Duracao + Sum, I + 1)    
-    % rotina (Eventos, R, 9)
-    %Resto is ListaEventos[_|Resto]
-    %rotina(ListaEventos[1..n], Roteiro, MaxDuracao, ListaEventos[0].Duracao + Sum)
-
-
-% banheiro
+roteiro(MaxDuracao) :- 
+  findEvent(MaxDuracao, L), 
+  R = [],
+  rotina(L, 1, R, MaxDuracao, 0).
